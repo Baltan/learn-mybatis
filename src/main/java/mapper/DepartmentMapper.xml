@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--注意：此处的命名空间是 DepartmentMapper 的全限定类名 -->
+<mapper namespace="mapper.DepartmentMapper">
+
+    <!-- ResultMaps 被用来将 SQL SELECT 语句的结果集映射到 JavaBean 的属性中 -->
+    <resultMap type="department" id="departmentMap">
+        <!-- 映射主键 -->
+        <id property="did" column="did"/>
+        <!-- 映射普通字段 -->
+        <result property="deptName" column="dept_name"/>
+        <result property="address" column="address"/>
+        <result property="tel" column="tel"/>
+    </resultMap>
+
+    <!-- 添加部门记录 -->
+    <!-- id 名称需要与 DepartmentMapper 类中的方法签名一致 -->
+    <!-- Department 这一别名在 mybatis-config.xml 中配置 -->
+    <insert id="insertDepartment" parameterType="bean.Department" useGeneratedKeys="true" keyProperty="did">
+        insert into department(dept_name, address, tel)
+        values (#{deptName}, #{address}, #{tel})
+    </insert>
+
+    <!-- 根据 ID 查询部门记录 -->
+    <!-- resultMap="departmentMap" -->
+    <select id="getDepartmentById" parameterType="int" resultType="department">
+        select did, dept_name deptName, address, tel
+        from department
+        where did = #{did}
+    </select>
+
+    <!-- 查询所有部门记录 -->
+    <select id="getAllDepartments" resultMap="departmentMap">
+        select *
+        from department
+    </select>
+</mapper>
