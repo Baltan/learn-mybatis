@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <properties resource="mysql.properties"></properties>
+
+    <typeAliases>
+        <!--        <typeAlias alias="department" type="bean.Department"/>-->
+        <!-- MyBatis 会扫描包底下所有的 JavaBean，并为每个 JavaBean 注册一个以小写字母开头的别名，
+        比如 bean.Department 的别名是 department。 -->
+        <package name="bean"/>
+    </typeAliases>
+
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <!-- 配置数据源 -->
+            <dataSource type="POOLED">
+                <property name="driver" value="${driver}"/>
+                <property name="url" value="${url}"/>
+                <property name="username" value="${username}"/>
+                <property name="password" value="${password}"/>
+                <!--                <property name="driver" value="com.mysql.jdbc.Driver"/>-->
+                <!--                <property name="url"-->
+                <!--                          value="jdbc:mysql://localhost:3306/learn_mybatis?useUnicode=true&amp;characterEncoding=UTF-8"/>-->
+                <!--                <property name="username" value="root"/>-->
+                <!--                <property name="password" value="blackdodo2005"/>-->
+            </dataSource>
+        </environment>
+    </environments>
+
+
+    <!-- mapper 对应的 xml 配置文件 -->
+    <mappers>
+        <mapper resource="mapper/CourseEnrollmentMapper.xml"/>
+        <mapper resource="mapper/AddressMapper.xml"/>
+        <mapper resource="mapper/CourseMapper.xml"/>
+        <mapper resource="mapper/TutorMapper.xml"/>
+        <mapper resource="mapper/StudentMapper.xml"/>
+        <mapper resource="mapper/DepartmentMapper.xml"/>
+        <!--        <mapper url="file:///Users/Baltan/Workspaces/IntelliJ IDEA/projects/learn_mybatis/src/main/java/mapper/DepartmentMapper.xml"/>-->
+        <!--        <mapper class="mapper.DepartmentMapper"/>-->
+    </mappers>
+</configuration>
