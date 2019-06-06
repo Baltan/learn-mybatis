@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.AddressMapper">
+
+    <resultMap id="Address" type="Address">
+        <id property="addrId" column="addr_id"/>
+        <result property="street" column="street"/>
+        <result property="city" column="city"/>
+        <result property="state" column="state"/>
+        <result property="zip" column="zip"/>
+        <result property="country" column="country"/>
+    </resultMap>
+
+    <select id="getAddressByCountryOrState1" resultMap="Address">
+        SELECT *
+        FROM ADDRESSES
+        WHERE country = #{param1}
+           OR state = #{param2}
+    </select>
+
+    <!-- 从 3.4.2 版本开始支持 -->
+    <select id="getAddressByCountryOrState2" resultMap="Address">
+        SELECT *
+        FROM ADDRESSES
+        WHERE country = #{arg0}
+           OR state = #{arg1}
+    </select>
+
+    <select id="getAddressByCountryOrState3" resultMap="Address">
+        SELECT *
+        FROM ADDRESSES
+        WHERE country = #{0}
+           OR state = #{1}
+    </select>
+
+    <select id="getAddressByCountryOrState4" resultMap="Address">
+        SELECT *
+        FROM ADDRESSES
+        WHERE country = #{country}
+           OR state = #{state}
+    </select>
+</mapper>
