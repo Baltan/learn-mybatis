@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.CourseEnrollmentMapper">
+
+    <resultMap id="CourseEnrollment" type="CourseEnrollment">
+        <result property="courseId" column="course_id"/>
+        <result property="studentId" column="stud_id"/>
+    </resultMap>
+
+    <!-- 在SQL中引用静态常量 -->
+    <select id="getStudentIdByCourseId1" resultType="int">
+        SELECT ce.stud_id
+        FROM COURSE_ENROLLMENT ce
+        WHERE ce.course_id = ${@common.Constant@COURSE_ID}
+    </select>
+
+
+    <!-- 在OGNL表达式中引用静态常量 -->
+    <select id="getStudentIdByCourseId2" resultType="int">
+        SELECT ce.stud_id
+        FROM COURSE_ENROLLMENT ce
+        <if test="@common.Constant@COURSE_ID==1">
+            WHERE 1=1
+        </if>
+    </select>
+
+    <!-- 在SQL中引用静态方法 -->
+    <select id="getStudentIdByCourseId3" resultType="int">
+        SELECT ce.stud_id
+        FROM COURSE_ENROLLMENT ce
+        WHERE ce.course_id = ${@common.Constant@getCourseId()}
+    </select>
+
+    <!-- 在OGNL表达式中引用静态方法 -->
+    <select id="getStudentIdByCourseId4" resultType="int">
+        SELECT ce.stud_id
+        FROM COURSE_ENROLLMENT ce
+        <if test="@common.Constant@getCourseId()==1">
+            WHERE 1=1
+        </if>
+    </select>
+</mapper>
