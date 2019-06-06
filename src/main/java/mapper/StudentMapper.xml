@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.StudentMapper">
+
+    <!-- 扩展ResultMap -->
+    <!--
+    <resultMap type="Student" id="StudentWithoutAddress">
+        <id property="studId" column="stud_id"/>
+        <result property="name" column="name"/>
+        <result property="email" column="email"/>
+        <result property="phone" column="phone"/>
+    </resultMap>
+    <resultMap type="Student" id="StudentWithAddress" extends="StudentWithoutAddress">
+        <result property="address.addrId" column="addr_id"/>
+        <result property="address.street" column="street"/>
+        <result property="address.city" column="city"/>
+        <result property="address.state" column="state"/>
+        <result property="address.zip" column="zip"/>
+        <result property="address.country" column="country"/>
+    </resultMap>
+    -->
+
+    <!-- 一对一关联映射 -->
+    <!--
+    <resultMap type="Student" id="StudentWithAddress">
+        <id property="studId" column="stud_id"/>
+        <result property="name" column="name"/>
+        <result property="email" column="email"/>
+        <result property="phone" column="phone"/>
+        <result property="address.addrId" column="addr_id"/>
+        <result property="address.street" column="street"/>
+        <result property="address.city" column="city"/>
+        <result property="address.state" column="state"/>
+        <result property="address.zip" column="zip"/>
+        <result property="address.country" column="country"/>
+    </resultMap>
+    -->
+
+    <!-- 使用嵌套ResultMap实现一对一关联映射，使用<association>配置内联的resultMap -->
+    <!--
+    <resultMap type="Student" id="StudentWithAddress">
+        <id property="studId" column="stud_id"/>
+        <result property="name" column="name"/>
+        <result property="email" column="email"/>
+        <result property="phone" column="phone"/>
+        <association property="address" javaType="Address">
+            <id property="addrId" column="addr_id"/>
+            <result property="street" column="street"/>
+            <result property="city" column="city"/>
+            <result property="state" column="state"/>
+            <result property="zip" column="zip"/>
+            <result property="country" column="country"/>
+        </association>
+    </resultMap>
+    -->
+
+    <!-- 使用嵌套ResultMap实现一对一关联映射 -->
+    <resultMap type="Address" id="Address">
+        <id property="addrId" column="addr_id"/>
+        <result property="street" column="street"/>
+        <result property="city" column="city"/>
+        <result property="state" column="state"/>
+        <result property="zip" column="zip"/>
+        <result property="country" column="country"/>
+    </resultMap>
+    <resultMap type="Student" id="StudentWithAddress">
+        <id property="studId" column="stud_id"/>
+        <result property="name" column="name"/>
+        <result property="email" column="email"/>
+        <result property="phone" column="phone"/>
+        <association property="address" resultMap="Address"/>
+    </resultMap>
+
+    <!-- 使用嵌套查询实现一对一关联映射 -->
+    <!--
+    <resultMap type="Address" id="Address">
+        <id property="addrId" column="addr_id"/>
+        <result property="street" column="street"/>
+        <result property="city" column="city"/>
+        <result property="state" column="state"/>
+        <result property="zip" column="zip"/>
+        <result property="country" column="country"/>
+    </resultMap>
+    <select id="getAddressById" parameterType="int" resultMap="Address">
+        SELECT *
+        FROM ADDRESSES
+        WHERE ADDR_ID = #{id}
+    </select>
+    <resultMap type="Student" id="StudentWithAddress">
+        <id property="studId" column="stud_id"/>
+        <result property="name" column="name"/>
+        <result property="email" column="email"/>
+        <result property="phone" column="phone"/>
+        <association property="address" column="addr_id" select="getAddressById"/>
+    </resultMap>
+    -->
+
+    <select id="getStudentById" parameterType="int" resultMap="StudentWithAddress">
+        SELECT STUD_ID,
+               NAME,
+               EMAIL,
+               PHONE,
+               A.ADDR_ID,
+               STREET,
+               CITY,
+               STATE,
+               ZIP,
+               COUNTRY
+        FROM STUDENTS S
+                 LEFT OUTER JOIN ADDRESSES A ON S.ADDR_ID = A.ADDR_ID
+        WHERE STUD_ID = #{studId}
+    </select>
+
+</mapper>
