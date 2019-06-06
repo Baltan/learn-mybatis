@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.CourseMapper">
+
+    <resultMap id="Course" type="Course">
+        <id column="course_id" property="courseId"/>
+        <result column="name" property="name"/>
+        <result column="description" property="description"/>
+        <result column="start_date" property="startDate"/>
+        <result column="end_date" property="endDate"/>
+        <result column="tutor_id" property="tutorId"/>
+    </resultMap>
+
+    <select id="searchCourses1" parameterType="hashmap" resultMap="Course">
+        SELECT * FROM COURSES WHERE TUTOR_ID = #{tutorId}
+        <if test="courseName != null">
+            AND NAME LIKE #{courseName}
+        </if>
+        <if test="startDate != null">
+            AND START_DATE <![CDATA[<=]]> #{startDate}
+        </if>
+        <if test="endDate != null">
+            AND END_DATE <![CDATA[<=]]> #{endDate}
+        </if>
+    </select>
+
+    <select id="searchCourses2" parameterType="hashmap" resultMap="Course">
+        SELECT * FROM COURSES
+        <choose>
+            <when test="searchBy == 'Tutor'">
+                WHERE TUTOR_ID = #{tutorId}
+            </when>
+            <when test="searchBy == 'CourseName'">
+                WHERE NAME like #{courseName}
+            </when>
+            <otherwise>
+                WHERE START_DATE <![CDATA[<=]]> now()
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="searchCourses3" parameterType="hashmap" resultMap="Course">
+        SELECT * FROM COURSES
+        <where>
+            <if test=" tutorId != null ">
+                AND TUTOR_ID = #{tutorId}
+            </if>
+            <if test="courseName != null">
+                AND name like #{courseName}
+            </if>
+            <if test="startDate != null">
+                AND start_date &lt;= #{startDate}
+            </if>
+            <if test="endDate != null">
+                AND end_date &lt;= #{endDate}
+            </if>
+        </where>
+    </select>
+
+    <!-- 如果有测试条件为真的<if>标签，<trim>元素会插入WHERE关键字，并移除紧跟WHERE后面的AND或OR。 -->
+    <select id="searchCourses4" parameterType="hashmap" resultMap="Course">
+        SELECT * FROM COURSES
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="tutorId != null">
+                AND TUTOR_ID = #{tutorId}
+            </if>
+            <if test="courseName != null">
+                AND name like #{courseName}
+            </if>
+        </trim>
+    </select>
+
+    <select id="searchCourses5" parameterType="hashmap" resultMap="Course">
+        SELECT * FROM COURSES
+        <if test="tutorIds != null">
+            <where>
+                tutor_id IN
+                <foreach item="tutorId" collection="tutorIds" open="(" separator="," close=")">
+                    #{tutorId}
+                </foreach>
+            </where>
+        </if>
+    </select>
+
+    <update id="updateCourse" parameterType="hashmap">
+        UPDATE COURSES
+        <set>
+            <if test="tutorId != null">
+                TUTOR_ID = #{tutorId},
+            </if>
+            <if test="endDate != null">
+                END_DATE = #{endDate},
+            </if>
+        </set>
+        WHERE COURSE_ID = #{id}
+    </update>
+
+</mapper>
