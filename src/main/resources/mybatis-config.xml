@@ -32,6 +32,7 @@
 
     <!-- mapper 对应的 xml 配置文件 -->
     <mappers>
+        <mapper resource="mapper/PagingMapper.xml"/>
         <mapper resource="mapper/CourseEnrollmentMapper.xml"/>
         <mapper resource="mapper/AddressMapper.xml"/>
         <mapper resource="mapper/CourseMapper.xml"/>
