@@ -44,6 +44,11 @@
             <artifactId>junit</artifactId>
             <version>4.8.1</version>
         </dependency>
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper</artifactId>
+            <version>3.3.1</version>
+        </dependency>
     </dependencies>
 
     <!-- IDEA的Maven项目不会编译src/main/java目录下的xml文件，所以mybatis-config.xml找不到mapper对应的xml文件。
