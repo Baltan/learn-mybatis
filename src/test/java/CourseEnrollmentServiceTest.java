@@ -9,7 +9,7 @@ import java.util.List;
  * @author Baltan
  * @date 2019-06-06 15:38
  */
-public class CourseEnrollmentTest {
+public class CourseEnrollmentServiceTest {
     CourseEnrollmentService courseEnrollmentService = new CourseEnrollmentService();
 
     @Test
