@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.PagingMapper">
+
+    <select id="getPages1" resultType="Paging" parameterType="int">
+        SELECT id
+        FROM PAGING
+        LIMIT #{0}, #{1}
+    </select>
+
+    <select id="getPages2" resultType="paging">
+        SELECT id
+        FROM PAGING
+    </select>
+
+    <select id="getPages3" resultType="Paging">
+        SELECT id
+        FROM PAGING
+    </select>
+</mapper>
